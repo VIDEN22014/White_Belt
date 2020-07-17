@@ -1,62 +1,40 @@
 #include <iostream>
 #include	 <vector>
 #include <string>
+#include <map>
 
 using namespace std;
 
-int commandSize, currentMonth = 0;
-
-int monthSize[13] = { 31,28,31,30,31,30,31,31,30,31,30,31,31 };
-
-vector<vector <string>> month(monthSize[currentMonth]);
-
-
-int i = 0;
-
-void add(vector<int>& commandValue) {
-	string temp;
-	cin >> commandValue[i];
-	cin >> temp;
-	month[commandValue[i] - 1].push_back(temp);
-}
-void dump(vector<int>& commandValue) {
-	cin >> commandValue[i];
-	int a = month[commandValue[i] - 1].size();
-	cout << a << " ";
-	for (auto j : month[commandValue[i] - 1])
-	{
-		cout << j << " ";
-	}
-	cout << endl;
-}
-void next() {
-	if (monthSize[currentMonth + 1] < monthSize[currentMonth]) {
-		for (int j = monthSize[currentMonth + 1]; j < monthSize[currentMonth]; j++)
-		{
-			for (int k = 0; k < month[j].size(); k++)
-			{
-				month[monthSize[currentMonth + 1] - 1].push_back(month[j][k]);
-			}
-		}
-	}
-	month.resize(monthSize[currentMonth + 1]);
-
-	currentMonth++;
-	currentMonth %= 12;
-}
 
 int main() {
 
-	cin >> commandSize;
-	vector<string> commandType(commandSize);
-	vector<int> commandValue(commandSize);
-	for (i = 0; i < commandSize; i++)
+	int lineSize;
+	cin >> lineSize;
+
+	string pair1, pair2;
+	map<char, int> pair1Map;
+	map<char, int> pair2Map;
+
+	for (int i = 0; i < lineSize; i++)
 	{
-		cin >> commandType[i];
-		if (commandType[i] == "ADD") { add(commandValue); }
-		if (commandType[i] == "DUMP") { dump(commandValue); }
-		if (commandType[i] == "NEXT") { next(); }
+		pair1Map.clear();
+		pair2Map.clear();
+
+		cin >> pair1 >> pair2;
+		for (const auto& i : pair1)
+		{
+			pair1Map[i]++;
+		}
+
+		for (const auto& i : pair2)
+		{
+			pair2Map[i]++;
+		}
+
+		if (pair1Map == pair2Map) cout << "YES"<<endl;
+		else cout << "NO"<<endl;
 	}
+
 
 	return 0;
 }
