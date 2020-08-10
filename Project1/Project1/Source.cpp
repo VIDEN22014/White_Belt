@@ -2,38 +2,20 @@
 #include <vector>
 #include <string>
 #include <map>
+#include <set>
 
 using namespace std;
 
 int main() {
-	map<int, vector<string>> bus_stops;
-	int operation_size, stops_size, counter = 1;
+	set<string> str;
+	int operation_size;
 	cin >> operation_size;
 	for (int i = 0; i < operation_size; i++)
 	{
-		cin >> stops_size;
-
-		vector<string> stops;
-		for (int j = 0; j < stops_size; j++)
-		{
-			string stop;
-			cin >> stop;
-			stops.push_back(stop);
-		}
-
-		bool is_exist = false;
-		for (auto j:bus_stops)
-		{
-			if (j.second == stops) {
-				cout << "Already exists for "<< j.first<< endl;
-				is_exist = true;
-			}
-		}
-		if (!is_exist) {
-			bus_stops[counter] = stops;
-			cout << "New bus " << counter<<endl;
-			counter++;
-		}
+		string s;
+		cin >> s;
+		str.insert(s);
 	}
+	cout << str.size() << endl;
 	return 0;
 }
