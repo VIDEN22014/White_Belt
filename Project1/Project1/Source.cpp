@@ -4,72 +4,95 @@
 #include <map>
 
 using namespace std;
-const string null;
+vector<string> bus_order;
 
-void change_captial(map<string, string>& m) {
-	string country, capital, old_capital;
-	cin >> country;
-	cin >> capital;
-	if (!m.count(country)) {
-		cout << "Introduce new country " << country << " with capital " << capital << endl;
+void new_bus(map<string, vector<string>>& m) {
+	string bus;
+	int stops_count;
+	cin >> bus >> stops_count;
+	bus_order.push_back(bus);
+	for (int i = 0; i < stops_count; i++)
+	{
+		string stop;
+		cin >> stop;
+		m[bus].push_back(stop);
+
 	}
-	else {
-		old_capital = m.find(country)->second;
-		if (old_capital == capital) {
-			cout << "Country " << country << " hasn't changed its capital" << endl;
-		}
-		else {
-			cout << "Country " << country << " has changed its capital from " << old_capital << " to " << capital << endl;
-		}
-	}
-	m[country] = capital;
 }
-void rename(map<string, string>& m) {
-	string old_country, new_country, temp_capital;
-	cin >> old_country;
-	cin >> new_country;
-	if (!m.count(old_country) || old_country== new_country|| m.count(new_country)) {
-		cout << "Incorrect rename, skip" << endl;
+void buses_for_stop(const map<string, vector<string>>& m) {
+	bool is_stop = false;
+	string stop;
+	cin >> stop;
+	for (int i = 0; i < bus_order.size(); i++)
+	{
+		for (int j = 0; j < m.find(bus_order[i])->second.size(); j++)
+		{
+			if (m.find(bus_order[i])->second[j] == stop) {
+				cout << bus_order[i] << " ";
+				is_stop = true;
+			}
+		}
+	}
+	if (!is_stop || bus_order.size() == 0) {
+		cout << "No stop" << endl;
+	}
+	else { cout << endl; }
+}
+void stops_for_bus(const map<string, vector<string>>& m) {
+	string bus;
+	cin >> bus;
+	if (m.count(bus) == false) {
+		cout << "No bus" << endl;
 		return;
 	}
-	temp_capital = m.find(old_country)->second;
-	m.erase(m.find(old_country));
-	cout<< "Country "<< old_country <<" with capital "<< temp_capital <<" has been renamed to "<< new_country <<endl;
-	m[new_country] = temp_capital;
-}
-void about(map<string, string>& m) {
-	string country;
-	cin >> country;
-	if (!m.count(country)) {
-		cout << "Country "<< country<<" doesn't exist" << endl;
+	for (int i = 0; i < m.find(bus)->second.size(); i++)
+	{
+		cout << "Stop " << m.find(bus)->second[i] << ": ";
+		bool interchange = false;
+		for (auto j : bus_order)
+		{
+			if (j != bus) {
+				
+				for (int k = 0; k < m.find(j)->second.size(); k++)
+				{
+					if (m.find(j)->second[k] == m.find(bus)->second[i]) {
+						cout << j << " ";
+						interchange = true;
+					}
+				}	
+			}
+		}
+		if (!interchange) cout << "no interchange";
+		cout << endl;
 	}
-	else {
-		cout << "Country " << country << " has capital " << m.find(country)->second<<endl;
-	}
 }
-void dump(const map<string, string>& m) {
-	if (m.size()==0) {
-		cout << "There are no countries in the world"<<endl;
+void all_buses(const map<string, vector<string>>& m) {
+	if (bus_order.size() == 0) {
+		cout << "No buses" << endl;
 		return;
 	}
-	for (auto i : m) {
-		cout << i.first << "/" << i.second << " ";
+	for (auto i:m)
+	{
+		cout << "Bus " << i.first << ": ";
+		for (auto j : i.second) {
+			cout << j<<" ";
+		}
+		cout << endl;
 	}
 }
-
 
 int main() {
-	string country, capital,operation_name;
-	map<string, string> capital_by_country;
+	string operation_name;
+	map<string, vector<string>> bus_stops;
 	int operation_size;
 	cin >> operation_size;
 	for (int i = 0; i < operation_size; i++)
 	{
 		cin >> operation_name;
-		if (operation_name == "CHANGE_CAPITAL") { change_captial(capital_by_country); }
-		if (operation_name == "RENAME") { rename(capital_by_country); }
-		if (operation_name == "ABOUT") { about(capital_by_country); }
-		if (operation_name == "DUMP") { dump(capital_by_country); }
+		if (operation_name == "NEW_BUS") { new_bus(bus_stops); }
+		if (operation_name == "BUSES_FOR_STOP") { buses_for_stop(bus_stops); }
+		if (operation_name == "STOPS_FOR_BUS") { stops_for_bus(bus_stops); }
+		if (operation_name == "ALL_BUSES") { all_buses(bus_stops); }
 	}
 	return 0;
 }
