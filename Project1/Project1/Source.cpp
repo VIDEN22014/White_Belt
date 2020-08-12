@@ -6,7 +6,7 @@
 
 using namespace std;
 
-void Display(vector<int>v) {
+void Display(vector<string>v) {
 	for (const auto& i : v)
 	{
 		cout << i << " ";
@@ -16,16 +16,25 @@ void Display(vector<int>v) {
 
 int main() {
 	int n;
-	vector<int>v;
+	vector<string>v;
 	cin >> n;
 	if (n < 0 || n>1000)return 0;
 	for (int i = 0; i < n; i++)
 	{
-		int a;
+		string a;
 		cin >> a;
 		v.push_back(a);
 	}
-	sort(v.begin(), v.end(), [](int x, int y) {return abs(x) < abs(y); });
+	sort(v.begin(), v.end(), [](string x, string y) {
+		for (auto& i : x)
+		{
+			i=tolower(i);
+		}
+		for (auto& i : y)
+		{
+			i=tolower(i);
+		} 
+		return x < y;});
 	Display(v);
 	return 0;
 }
