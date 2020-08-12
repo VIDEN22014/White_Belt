@@ -1,40 +1,31 @@
 #include <iostream>
-#include <set>
+#include <vector>
 #include <string>
 #include <map>
+#include <algorithm>
 
 using namespace std;
 
-int main() {
-	map<int, set<string>> bus_stops;
-	int operation_size, stops_size, counter = 1;
-	cin >> operation_size;
-	for (int i = 0; i < operation_size; i++)
+void Display(vector<int>v) {
+	for (const auto& i : v)
 	{
-		cin >> stops_size;
-
-		set<string> stops;
-
-		for (int j = 0; j < stops_size; j++)
-		{
-			string stop;
-			cin >> stop;
-			stops.insert(stop);
-		}
-
-		bool is_exist = false;
-		for (auto j : bus_stops)
-		{
-			if (j.second == stops) {
-				cout << "Already exists for " << j.first << endl;
-				is_exist = true;
-			}
-		}
-		if (!is_exist) {
-			bus_stops[counter] = stops;
-			cout << "New bus " << counter << endl;
-			counter++;
-		}
+		cout << i << " ";
 	}
+	cout << endl;
+}
+
+int main() {
+	int n;
+	vector<int>v;
+	cin >> n;
+	if (n < 0 || n>1000)return 0;
+	for (int i = 0; i < n; i++)
+	{
+		int a;
+		cin >> a;
+		v.push_back(a);
+	}
+	sort(v.begin(), v.end(), [](int x, int y) {return abs(x) < abs(y); });
+	Display(v);
 	return 0;
 }
