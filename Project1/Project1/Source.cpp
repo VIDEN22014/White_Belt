@@ -1,40 +1,40 @@
 #include <iostream>
 #include <vector>
 #include <string>
-#include <map>
 #include <algorithm>
 
 using namespace std;
 
-void Display(vector<string>v) {
-	for (const auto& i : v)
-	{
-		cout << i << " ";
+class SortedStrings {
+public:
+	void AddString(const string& s) {
+		// добавить строку s в набор
+		sorted_string.push_back(s);
+		sort(sorted_string.begin(), sorted_string.end());
+	}
+	vector<string> GetSortedStrings() {
+		// получить набор из всех добавленных строк в отсортированном порядке
+		return sorted_string;
+	}
+private:
+	// приватные поля
+	vector<string> sorted_string;
+};
+
+void PrintSortedStrings(SortedStrings& strings) {
+	for (const string& s : strings.GetSortedStrings()) {
+		cout << s << " ";
 	}
 	cout << endl;
 }
 
 int main() {
-	int n;
-	vector<string>v;
-	cin >> n;
-	if (n < 0 || n>1000)return 0;
-	for (int i = 0; i < n; i++)
-	{
-		string a;
-		cin >> a;
-		v.push_back(a);
-	}
-	sort(v.begin(), v.end(), [](string x, string y) {
-		for (auto& i : x)
-		{
-			i=tolower(i);
-		}
-		for (auto& i : y)
-		{
-			i=tolower(i);
-		} 
-		return x < y;});
-	Display(v);
+	SortedStrings strings;
+	strings.AddString("first");
+	strings.AddString("third");
+	strings.AddString("second");
+	PrintSortedStrings(strings);
+	strings.AddString("second");
+	PrintSortedStrings(strings);
 	return 0;
 }
